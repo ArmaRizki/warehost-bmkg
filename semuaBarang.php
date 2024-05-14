@@ -46,7 +46,7 @@ if (
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabel Semua Barang - BMKG Warehouse Management</title>
+    <title>Semua Barang</title>
     
     
     
@@ -372,38 +372,36 @@ while ($row = mysqli_fetch_assoc($result)) { ?>
                 }
             ?></td>
 
-<td style="background-color: #F2F7FF;">
-    <?php
-    // Assuming $result['id_barang'] contains the ID of the item
-    $id_barang = $row['id_barang'];
-    $qrContent = "192.168.1.154/whm/infoBarang.php?id_barang=$id_barang";
-    ?>
-    <!-- Create a div to hold the QR code -->
-    <div id="qrcode<?php echo $id_barang; ?>"></div>
+        <td style="background-color: #FFFFFF;">
+    <a href="infoBarang.php?id_barang=<?php echo htmlspecialchars($row["id_barang"]); ?>">
+        <?php
+        // Assuming $result['id_barang'] contains the ID of the item
+        $id_barang = $row['id_barang'];
+        $qrContent = "192.168.1.9/whm/infoBarang.php?id_barang=$id_barang";
+        ?>
 
-    <!-- Include the qrcode.js library -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@latest/qrcode.min.js"></script>
+        <!-- Create a canvas element to hold the QR code -->
+        <canvas id="qrcodeCanvas<?php echo $id_barang; ?>"></canvas>
 
-    <!-- Generate QR code -->
-    <script>
-        // Content to be encoded in the QR code
-        var qrContent = "<?php echo $qrContent; ?>";
+        <!-- Include the qrcode.min.js library for browser -->
+        <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-        // Get the div element where the QR code will be displayed
-        var qrcodeDiv = document.getElementById("qrcode<?php echo $id_barang; ?>");
+        <!-- Generate QR code -->
+        <script>
+            // Content to be encoded in the QR code
+            var qrContent<?php echo $id_barang; ?> = "<?php echo $qrContent; ?>";
 
-        // Generate QR code
-        new QRCode(qrcodeDiv, {
-            text: qrContent,
-            width: 128,
-            height: 128
-        });
-    </script>
-
-    <!-- Display the QR code as an image -->
-    <a href="infoBarang.php?id_barang=<?php echo $row["id_barang"]; ?>">
-    <img src="https://api.qrserver.com/v1/create-qr-code/?data=<?php echo urlencode($qrContent); ?>&size=100x100" alt="QRCode" style="max-width: 100px; max-height: 100px;">
+            // Generate QR code and render it onto the canvas
+            QRCode.toCanvas(document.getElementById("qrcodeCanvas<?php echo $id_barang; ?>"), qrContent<?php echo $id_barang; ?>, function (error) {
+                if (error) {
+                    console.error(error);
+                } else {
+                    console.log('QR code generated successfully');
+                }
+            });
+        </script>
 </td>
+
 
     <td><?php echo $row["nama_barang"]; ?></td>
     <td><?php echo $row["jenis_peralatan"]; ?></td>
@@ -539,7 +537,7 @@ while ($row = mysqli_fetch_assoc($result)) { ?>
                         $(node).hide();
                     },
                     exportOptions: {
-                        columns: [0, 1, 3,4,5,6,7,8,9,11]
+                        columns: [0, 1, 3,4,5,6,7,8,9]
                     }
                 },
                 {
@@ -549,7 +547,7 @@ while ($row = mysqli_fetch_assoc($result)) { ?>
                         $(node).hide();
                     },
                     exportOptions: {
-                        columns: [0, 1, 3,4,5,6,7,8,9,11]
+                        columns: [0, 1, 3,4,5,6,7,8,9]
                     }
                 },
                 {
@@ -559,7 +557,7 @@ while ($row = mysqli_fetch_assoc($result)) { ?>
                         $(node).hide();
                     },
                     exportOptions: {
-                        columns: [0, 1, 3,4,5,6,7,8,9,11]
+                        columns: [0, 1, 3,4,5,6,7,8,9]
                     }
                 }
             ]

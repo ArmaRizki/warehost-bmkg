@@ -8,13 +8,15 @@
     $no = 0;
 ?>
 
+
+
     <!DOCTYPE html>
     <html lang="en">
 
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Tabel Barang Masuk - BMKG Warehouse Management</title>
+        <title>Barang Masuk</title>
         
         
         
@@ -40,8 +42,7 @@
 
         
         <script src="assets/static/js/initTheme.js"></script>
-        <script src="assets/static/js/initTheme.js"></script>
-<script>
+    <script>
     window.onload = function() {
         var logo = document.querySelector('.logoBMKG img');
         var toggleDark = document.getElementById('toggle-dark');
@@ -291,39 +292,36 @@
             }
             ?>
         </td>
+
         <td style="background-color: #F2F7FF;">
-    <?php
-    // Assuming $result['id_barang'] contains the ID of the item
-    $id_barang = $result['id_barang'];
-    $qrContent = "192.168.1.132/whm/infoBarang.php?id_barang=$id_barang";
-    ?>
-    <!-- Create a div to hold the QR code -->
-    <div id="qrcode<?php echo $id_barang; ?>"></div>
+    <a href="infoBarang.php?id_barang=<?php echo htmlspecialchars($result["id_barang"]); ?>">
+        <?php
+        // Assuming $result['id_barang'] contains the ID of the item
+        $id_barang = $result['id_barang'];
+        $qrContent = "192.168.1.9/whm/infoBarang.php?id_barang=$id_barang";
+        ?>
 
-    <!-- Include the qrcode.js library -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@latest/qrcode.min.js"></script>
+        <!-- Create a canvas element to hold the QR code -->
+        <canvas id="qrcodeCanvas<?php echo $id_barang; ?>"></canvas>
 
-    <!-- Generate QR code -->
-    <script>
-        // Content to be encoded in the QR code
-        var qrContent = "<?php echo $qrContent; ?>";
+        <!-- Include the qrcode.min.js library for browser -->
+        <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-        // Get the div element where the QR code will be displayed
-        var qrcodeDiv = document.getElementById("qrcode<?php echo $id_barang; ?>");
+        <!-- Generate QR code -->
+        <script>
+            // Content to be encoded in the QR code
+            var qrContent<?php echo $id_barang; ?> = "<?php echo $qrContent; ?>";
 
-        // Generate QR code
-        new QRCode(qrcodeDiv, {
-            text: qrContent,
-            width: 128,
-            height: 128
-        });
-    </script>
-
-    <!-- Display the QR code as an image -->
-    <a href="infoBarang.php?id_barang=<?php echo $result["id_barang"]; ?>">
-    <img src="https://api.qrserver.com/v1/create-qr-code/?data=<?php echo urlencode($qrContent); ?>&size=100x100" alt="QRCode" style="max-width: 100px; max-height: 100px;">
+            // Generate QR code and render it onto the canvas
+            QRCode.toCanvas(document.getElementById("qrcodeCanvas<?php echo $id_barang; ?>"), qrContent<?php echo $id_barang; ?>, function (error) {
+                if (error) {
+                    console.error(error);
+                } else {
+                    console.log('QR code generated successfully');
+                }
+            });
+        </script>
 </td>
-
 
             <td><?php echo $result["nama_barang"]; 
             $nama_barang = $result['nama_barang'];?></td>
@@ -349,8 +347,9 @@
                 <a href="./uploads/<?php echo $result["file"]; ?>" download="<?php echo $fileName; ?>"><?php echo $fileNameDisplay; ?></a>
             </td>
             <td>
-            <button class="btn icon btn-secondary me-1 aksi button" data-bs-toggle="modal" data-bs-target="#modalPrintQR" onclick="setQRCodeData()">
-            <i class="bi bi-qr-code-scan"></i></a></button>
+            <button class="btn icon btn-secondary me-1 aksi button" data-bs-toggle="modal" data-bs-target="#modalPrintQR" onclick="setQRCodeData('<?php echo htmlspecialchars($qrContent); ?>', '<?php echo htmlspecialchars($result['nama_barang']); ?>');" alt="QRCode" style="max-width: 100px; max-height: 100px;">
+    <i class="bi bi-qr-code-scan"></i>
+</button>
             <a href="kelola.php?ubah=<?php echo $result["id"]; ?>&status=masuk" type="button" class="btn icon btn-primary me-1 aksi-buttons">
                 <i class="bi bi-pencil"></i>
             </a>
@@ -371,7 +370,7 @@
                 </div>
             </div>
 
-<div class="modal fade" id="modalPrintQR" tabindex="-1" aria-labelledby="modalPrintQRLabel" aria-hidden="true">
+            <div class="modal fade" id="modalPrintQR" tabindex="-1" aria-labelledby="modalPrintQRLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -390,7 +389,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button class="btn icon btn-primary me-1 aksi-buttons" onclick="printQRCode()">
+                <button id="printButton" class="btn icon btn-primary me-1 aksi-buttons" onclick="PrintQRCode(QRCode)">
                     <i class="bi bi-qr-code-scan"></i> Cetak 
                 </button>
             </div>
@@ -399,34 +398,58 @@
 </div>
 
 <script>
-    function printQRCode() {
-        var nama_barang = "<?php echo $nama_barang; ?>";
+    document.getElementById('modalPrintQR').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent form submission if inside a form
+            document.getElementById('printButton').click();
+        }
+    });
+</script>
+
+<script>
+    var qrCodeData = {};
+
+    function setQRCodeData(qrContent, productName) {
+        var canvasId = "qrcodeCanvas" + productName;
+        var canvas = document.createElement('canvas');
+        canvas.id = canvasId;
+        document.body.appendChild(canvas);
+
+        QRCode.toCanvas(canvas, qrContent, function (error) {
+            if (error) {
+                console.error(error);
+                return;
+            }
+            var qrImageUrl = canvas.toDataURL("image/png");
+            qrCodeData.imageSrc = qrImageUrl;
+            qrCodeData.productName = productName;
+
+            document.body.removeChild(canvas);
+        });
+    }
+
+    function PrintQRCode() {
+        var jumlahQR = document.getElementById('jumlahQR').value;
+        var imageSrc = qrCodeData.imageSrc;
+        var productName = qrCodeData.productName;
+
         var printWindow = window.open('', '_blank');
-        printWindow.document.write('<html><head><title>' + nama_barang + '</title></head><body>');
+        printWindow.document.write('<html><head><title>' + productName + '</title></head><body>');
 
-        // Loop to add QR codes to print window
         for (var i = 0; i < jumlahQR; i++) {
-            // Content to be encoded in the QR code
-            var qrContent = "<?php echo $qrContent; ?>";
-
-            // Generate QR code
-            var qrcodeDiv = document.createElement("div");
-            qrcodeDiv.id = "qrcode" + i; // Set unique id for each QR code
-            printWindow.document.body.appendChild(qrcodeDiv);
-
-            new QRCode(qrcodeDiv, {
-                text: qrContent,
-                width: 128,
-                height: 128
-            });
+            printWindow.document.write('<img src="' + imageSrc + '">');
         }
 
-        printWindow.document.close();
-        printWindow.print();
-        printWindow.close();
-        location.reload();
+        setTimeout(function() {
+            printWindow.print();
+            printWindow.close();
+            location.reload(); 
+        }, 1000); 
     }
+
 </script>
+
+
 
             <div class="modal fade text-left" id="danger" tabindex="-1" role="dialog"
                                                 aria-labelledby="myModalLabel120" aria-hidden="true">
@@ -516,7 +539,7 @@
                         $(node).hide();
                     },
                     exportOptions: {
-                        columns: [0, 2, 3,4,5,6,7,8,9]
+                        columns: [0, 2, 3,4,5,6,7,8]
                     }
                 },
                 {
@@ -526,7 +549,7 @@
                         $(node).hide();
                     },
                     exportOptions: {
-                        columns: [0, 2, 3,4,5,6,7,8,9]
+                        columns: [0, 2, 3,4,5,6,7,8]
                     }
                 },
                 {
@@ -536,7 +559,7 @@
                         $(node).hide();
                     },
                     exportOptions: {
-                        columns: [0, 2, 3,4,5,6,7,8,9]
+                        columns: [0, 2, 3,4,5,6,7,8,]
                     }
                 }, 'colvis'
             ]

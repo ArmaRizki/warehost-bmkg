@@ -48,7 +48,7 @@ if(isset($_POST['change-p'])){
 <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Tabel Barang Masuk - BMKG Warehouse Management</title>
+        <title>Keamanan</title>
         
         
         
@@ -284,16 +284,7 @@ if(isset($_POST['change-p'])){
     </section>
 </div>
 
-<footer>
-    <div class="footer clearfix mb-0 text-muted">
-        <div class="float-start">
-            <p>2024 &copy; Stasiun Geofisika Sleman</p>
-        </div>
-        <div class="float-end" id="footerText">
-            <p><a href="#"> Tim MBKM BMKG Stasiun Geofisika Sleman</a></p>
-        </div>
-    </div>
-</footer>
+
         </div>
     </div>
     <script src="assets/static/js/components/dark.js"></script>

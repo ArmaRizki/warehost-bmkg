@@ -52,7 +52,7 @@ if (isset($_GET["ubah"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMKG Warehouse Management</title>
+    <title>Kelola</title>
     
     
     
