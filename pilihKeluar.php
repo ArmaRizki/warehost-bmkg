@@ -27,18 +27,27 @@ $sql = mysqli_query($conn, $query);
 
 <body>
 <script src="assets/static/js/initTheme.js"></script>
-    <script>
-        window.onload = function() {
-            document.getElementById('toggle-dark').addEventListener('click', function() {
-                var logo = document.querySelector('.logoBMKG img');
-                if (this.checked) {
-                    logo.src = './assets/compiled/png/logo.png'; // Change to your dark logo path
-                } else {
-                    logo.src = './assets/compiled/png/logoblack.png'; // Change to your light logo path
-                }
-            });
-        };
-    </script>
+<script>
+    window.onload = function() {
+        var logo = document.querySelector('.logoBMKG img');
+        var toggleDark = document.getElementById('toggle-dark');
+
+        toggleDark.addEventListener('click', function() {
+            if (this.checked) {
+                logo.src = './assets/compiled/png/logo.png'; // Change to your dark logo path
+            } else {
+                logo.src = './assets/compiled/png/logoblack.png'; // Change to your light logo path
+            }
+            // Reload the page only if dark theme is selected
+                location.reload();
+        });
+
+        // Check the initial theme setting on page load
+        if (!toggleDark.checked) {
+            logo.src = './assets/compiled/png/logoblack.png'; // Set the initial logo based on light theme
+        }
+    };
+</script>
     <div id="app">
         
         <div id="sidebar">

@@ -67,7 +67,7 @@ if (
     
     <script src="assets/static/js/initTheme.js"></script>
     <script src="assets/static/js/initTheme.js"></script>
-<script>
+    <script>
     window.onload = function() {
         var logo = document.querySelector('.logoBMKG img');
         var toggleDark = document.getElementById('toggle-dark');
@@ -79,9 +79,7 @@ if (
                 logo.src = './assets/compiled/png/logoblack.png'; // Change to your light logo path
             }
             // Reload the page only if dark theme is selected
-            if (!this.checked) {
                 location.reload();
-            }
         });
 
         // Check the initial theme setting on page load
@@ -90,7 +88,6 @@ if (
         }
     };
 </script>
-
     <div id="app">
         
         <div id="sidebar">

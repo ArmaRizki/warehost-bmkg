@@ -18,7 +18,7 @@ $sn = "";
 $asal_perolehan = "";
 // $jumlah_barang = "";
 $harga = "";
-// $foto = '';
+$foto = '';
 $keterangan = "";
 
 if (isset($_GET["ubah"])) {
@@ -81,9 +81,7 @@ if (isset($_GET["ubah"])) {
                 logo.src = './assets/compiled/png/logoblack.png'; // Change to your light logo path
             }
             // Reload the page only if dark theme is selected
-            if (!this.checked) {
                 location.reload();
-            }
         });
 
         // Check the initial theme setting on page load
@@ -309,70 +307,73 @@ if (isset($_GET["ubah"])) {
 
 
 
-                <div class="row">
-                <div class="col-md-6 col-12">
+                 <div class="row">
+    <div class="col-md-6 col-12">
         <div class="form-group">
-            <?php if (isset($_GET["status"]) && $_GET["status"] === 'keluar') { ?>
+            <?php
+            if (isset($_GET["status"]) && $_GET["status"] === 'keluar') {
+                $tanggal_keluar = isset($tanggal_keluar) ? $tanggal_keluar : ''; // Check if $tanggal_keluar is set
+            ?>
                 <label for="tanggal_keluar" class="form-label">Tanggal Keluar</label>
-                <input type="date" id="tanggal_keluar" class="form-control" name="tanggal_keluar" required>
-            <?php } else { ?>
+                <input type="date" id="tanggal_keluar" class="form-control" name="tanggal_keluar" value="<?php echo $tanggal_keluar; ?>" required>
+            <?php } else {
+                $tanggal = isset($tanggal) ? $tanggal : ''; // Check if $tanggal is set
+            ?>
                 <label for="tanggal" class="form-label">Tanggal Masuk</label>
-                <input type="date" id="tanggal" class="form-control" name="tanggal" required>
+                <input type="date" id="tanggal" class="form-control" name="tanggal" value="<?php echo $tanggal; ?>" required>
                 <input type="hidden" name="tanggal_keluar" value="">
-
             <?php } ?>
         </div>
     </div>
 </div>
+
                 
-          <div class="row">
-            <div class="col-md-6 col-12">
-                                <h6>Nama Barang</h6>
-                                <div class="form-group position-relative has-icon-right">
-                                <select id="nama_barang" class="form-control" name="nama_barang" class="form-select" required>
-                      <option value="">Pilih Nama Barang</option>
-                      <?php
-                      $sql = "SELECT namabarang FROM datanama";
-                      $result = $conn->query($sql);
+<div class="row">
+    <div class="col-md-6 col-12">
+        <h6>Nama Barang</h6>
+        <div class="form-group position-relative has-icon-right">
+            <select id="nama_barang" class="form-control" name="nama_barang" class="form-select" required>
+                <option value="">Pilih Nama Barang</option>
+                <?php
+                $sql = "SELECT namabarang FROM datanama";
+                $result = $conn->query($sql);
 
-                      // If data is found, generate dropdown options
-                      if ($result->num_rows > 0) {
-                          while ($row = $result->fetch_assoc()) {
-                              echo "<option value='" . $row['namabarang'] . "'>" . $row['namabarang'] . "</option>";
-                              
-                          }
-                      }
-                      ?>
-                  </select>
-                                    <div class="form-control-icon">
-                                    <i class="bi bi-caret-down-fill"></i>
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $selected = ($row['namabarang'] == $nama_barang) ? 'selected' : '';
+                        echo "<option value='" . $row['namabarang'] . "' $selected>" . $row['namabarang'] . "</option>";
+                    }
+                }
+                ?>
+            </select>
+            <div class="form-control-icon">
+                <i class="bi bi-caret-down-fill"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-12">
+        <h6>Jenis Peralatan</h6>
+        <div class="form-group position-relative has-icon-right">
+            <select id="jenis_peralatan" class="form-control" name="jenis_peralatan" required>
+                <option value="">Pilih Jenis Peralatan</option>
+                <?php
+                $sql = "SELECT jenisperalatan FROM jenisnama";
+                $result = $conn->query($sql);
 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-12">
-                                <h6>Jenis Peralatan</h6>
-                                <div class="form-group position-relative has-icon-right">
-                                <select id="jenis_peralatan" class="form-control" name="jenis_peralatan" required>
-                      <option value="">Pilih Jenis Peralatan</option>
-                      <?php
-                      $sql = "SELECT jenisperalatan FROM jenisnama";
-                      $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $selected = ($row['jenisperalatan'] == $jenis_peralatan) ? 'selected' : '';
+                        echo "<option value='" . $row['jenisperalatan'] . "' $selected>" . $row['jenisperalatan'] . "</option>";
+                    }
+                }
+                ?>
+            </select>
+            <div class="form-control-icon">
+                <i class="bi bi-caret-down-fill"></i>
+            </div>
+        </div>
+    </div>
 
-                      // If data is found, generate dropdown options
-                      if ($result->num_rows > 0) {
-                          while ($row = $result->fetch_assoc()) {
-                              echo "<option value='" . $row['jenisperalatan'] . "'>" . $row['jenisperalatan'] . "</option>";
-                          }
-                      }
-                      ?>
-                  </select>
-                                    <div class="form-control-icon">
-                                    <i class="bi bi-caret-down-fill"></i>
-
-                                    </div>
-                                </div>
-                            </div>
           
                   <div class="col-md-6 col-12">
                     <div class="form-group">
@@ -442,6 +443,7 @@ if (isset($_GET["ubah"])) {
                       />
                     </div>
                   </div>
+                  
                   <?php if (isset($_GET["status"]) && $_GET["status"] === 'keluar') { ?>
         <div class="col-md-6 col-12">
             <div class="form-group">
@@ -459,7 +461,7 @@ if (isset($_GET["ubah"])) {
                   <div class="col-md-6 col-12">
                   <div class="form-group">
     <label for="foto" class="form-label">Foto Barang</label>
-    <input type="file" id="foto" class="form-control" name="foto" placeholder="Foto Barang" accept="image/*" onchange="validateFileSize(this)" />
+    <input type="file" id="foto" class="form-control" name="foto" placeholder="Foto Barang" accept="image/*" onchange="validateFileSize(this)" value="<?php echo $foto; ?>"/>
 </div>
 
                   </div>

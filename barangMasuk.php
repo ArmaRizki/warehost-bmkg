@@ -42,7 +42,7 @@
 
         
         <script src="assets/static/js/initTheme.js"></script>
-    <script>
+        <script>
     window.onload = function() {
         var logo = document.querySelector('.logoBMKG img');
         var toggleDark = document.getElementById('toggle-dark');
@@ -54,9 +54,7 @@
                 logo.src = './assets/compiled/png/logoblack.png'; // Change to your light logo path
             }
             // Reload the page only if dark theme is selected
-            if (!this.checked) {
                 location.reload();
-            }
         });
 
         // Check the initial theme setting on page load
@@ -329,7 +327,7 @@
             <td><?php echo $result["merk"]; ?></td>
             <td><?php echo $result["sn"]; ?></td>
             <td><?php echo $result["asal_perolehan"]; ?></td>
-            <td><?php echo number_format($result["harga"], 0, ".", "."); ?></td>
+            <td><?php echo "Rp. " .number_format($result["harga"], 0, ".", ".").",00"; ?></td>
             <td><?php echo $result["keterangan"]; ?></td>
             <td><img src="./uploads/<?php echo $result["foto"]; ?>" alt="Photo" style="max-width: 100px; max-height: 100px;"></td>
             <td>
@@ -578,5 +576,3 @@
 </script> 
         </body>
     </html>
-
-    <script> confirmDelete" "

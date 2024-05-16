@@ -47,9 +47,7 @@ $no = 0;
                 logo.src = './assets/compiled/png/logoblack.png'; // Change to your light logo path
             }
             // Reload the page only if dark theme is selected
-            if (!this.checked) {
                 location.reload();
-            }
         });
 
         // Check the initial theme setting on page load

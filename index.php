@@ -193,9 +193,7 @@ while ($row = mysqli_fetch_assoc($resultKeluar)) {
                 logo.src = './assets/compiled/png/logoblack.png'; // Change to your light logo path
             }
             // Reload the page only if light theme is selected
-            if (!this.checked) {
                 location.reload();
-            }
         });
 
         // Check the initial theme setting on page load
