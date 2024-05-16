@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2024 at 11:49 AM
+-- Generation Time: May 16, 2024 at 06:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,7 +37,7 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`username`, `password`) VALUES
-('admin', '21232f297a57a5a743894a0e4a801fc3');
+('admin', '81dc9bdb52d04dc20036dbd8313ed055');
 
 --
 -- Indexes for dumped tables
