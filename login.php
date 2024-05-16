@@ -97,7 +97,7 @@ if(isset($_POST['login'])){
 
 
             <h1 class="auth-title mt-5">Login</h1>
-            <p class="auth-subtitle mb-5">Warehost Management BMKG Sleman</p>
+            <p class="auth-subtitle mb-5">Warehouse Management BMKG Sleman</p>
 
             <!-- PERINGATAN ERROR -->
             <?php if($err){ ?>
