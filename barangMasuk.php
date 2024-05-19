@@ -293,11 +293,12 @@
 
         <td style="background-color: #F2F7FF;">
     <a href="infoBarang.php?id_barang=<?php echo htmlspecialchars($result["id_barang"]); ?>">
-        <?php
-        // Assuming $result['id_barang'] contains the ID of the item
+    <?php
         $id_barang = $result['id_barang'];
-        $qrContent = "192.168.1.9/whm/infoBarang.php?id_barang=$id_barang";
+        $qrContent = "36.68.71.3/whm/infoBarang.php?id_barang=$id_barang";
         ?>
+
+
 
         <!-- Create a canvas element to hold the QR code -->
         <canvas id="qrcodeCanvas<?php echo $id_barang; ?>"></canvas>

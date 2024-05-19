@@ -278,7 +278,7 @@ $no = 0;
         <?php
         // Assuming $result['id_barang'] contains the ID of the item
         $id_barang = $result['id_barang'];
-        $qrContent = "192.168.1.9/whm/infoBarang.php?id_barang=$id_barang";
+        $qrContent = "36.68.71.3/whm/infoBarang.php?id_barang=$id_barang";
         ?>
 
         <!-- Create a canvas element to hold the QR code -->

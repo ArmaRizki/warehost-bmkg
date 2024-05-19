@@ -190,22 +190,22 @@ $no = 0;
                     <div class="card-body">
                         <!-- FORM READ ONLY -->
                     <form action="#" method="get">
+                    <div class="form-group">
+    <label for="tanggal" class="form-label">Tanggal Masuk</label>
+    <input type="date" name="tanggal" id="tanggal" class="form-control" placeholder="-" value="<?php echo $result["tanggal"]; ?>" readonly>
+</div>
+
+<?php if ($result["status"] != 'masuk'): ?>
     <div class="form-group">
-        <label for="tanggal" class="form-label">Tanggal Masuk</label>
-        <input type="date" name="tanggal" id="tanggal" class="form-control" placeholder="-" value="<?php echo $result["tanggal"]; ?>" readonly>
-    </div>
-    <div class="form-group">
-    <label for="tanggal_keluar" class="form-label">Tanggal Keluar</label>
-    <?php if ($result["status"] == 'masuk'): ?>
-        <input type="text" name="tanggal_keluar" id="tanggal_keluar" class="form-control" placeholder="-" value="Tidak Keluar" readonly>
-    <?php else: ?>
+        <label for="tanggal_keluar" class="form-label">Tanggal Keluar</label>
         <input type="date" name="tanggal_keluar" id="tanggal_keluar" class="form-control" placeholder="-" value="<?php 
             echo !empty($result["tanggal_keluar"]) 
                 ? (new DateTime($result["tanggal_keluar"]))->format("Y-m-d") 
                 : "-";
         ?>" readonly>
-    <?php endif; ?>
-</div>
+    </div>
+<?php endif; ?>
+
     <div class="form-group">
         <label for="email" class="form-label">ID Barang</label>
         <input type="text" name="id_barang" id="id_barang" class="form-control" placeholder="-" value="<?php echo $result["id_barang"]; ?>" readonly>
@@ -234,14 +234,45 @@ $no = 0;
         <label for="harga" class="form-label">Harga</label>
         <input type="text" name="harga" id="harga" class="form-control" placeholder="-" value="<?php echo "Rp ." .number_format($result["harga"], 0, ".", "."). ",00"; ?>" readonly>
     </div>
-    <div class="form-group">
-        <label for="harga" class="form-label">Lokasi</label>
-        <input type="text" name="harga" id="harga" class="form-control" placeholder="-" value="<?php echo $result["lokasi"]; ?>" readonly>
-    </div>
-    <div class="form-group">
-        <label for="harga" class="form-label">Teknisi Penanggungjawab</label>
-        <input type="text" name="harga" id="harga" class="form-control" placeholder="-" value="<?php echo $result["teknisi"]; ?>" readonly>
-    </div>
+    <div class="form-group" id="lokasiGroup">
+    <label for="harga" class="form-label">Lokasi</label>
+    <input type="text" name="harga" id="harga" class="form-control" placeholder="-" value="<?php echo $result["lokasi"]; ?>" readonly>
+</div>
+<div class="form-group" id="teknisiGroup">
+    <label for="harga" class="form-label">Teknisi Penanggungjawab</label>
+    <input type="text" name="harga" id="harga" class="form-control" placeholder="-" value="<?php echo $result["teknisi"]; ?>" readonly>
+</div>
+
+<script>
+    // Assuming status is stored in a variable named statusValue
+    var statusValue = "<?php echo $result["status"]; ?>";
+    
+    // Function to hide elements
+    function hideElement(elementId) {
+        var element = document.getElementById(elementId);
+        if (element) {
+            element.style.display = "none";
+        }
+    }
+
+    // Function to show elements
+    function showElement(elementId) {
+        var element = document.getElementById(elementId);
+        if (element) {
+            element.style.display = "block";
+        }
+    }
+
+    // Check status and hide/show elements accordingly
+    if (statusValue === "masuk") {
+        hideElement("lokasiGroup");
+        hideElement("teknisiGroup");
+    } else {
+        showElement("lokasiGroup");
+        showElement("teknisiGroup");
+    }
+</script>
+
     <div class="form-group">
         <label for="keterangan" class="form-label">Keterangan</label>
         <input type="text" name="keterangan" id="keterangan" class="form-control" placeholder="-" value="<?php echo $result["keterangan"]; ?>" readonly>

@@ -6,7 +6,6 @@ include "auth.php";
 // $query = "SELECT * FROM masuk;";
 // $sql = mysqli_query($conn, $query);
 $no = 0;
-$generator = new Picqer\Barcode\BarcodeGeneratorHTML();
 ?>
 
 

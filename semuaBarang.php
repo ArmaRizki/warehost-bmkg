@@ -430,9 +430,7 @@ while ($row = mysqli_fetch_assoc($result)) { ?>
     <a href="./uploads/<?php echo $row["file"]; ?>" download><?php echo $fileName; ?></a>
 </td>
 <td>
-        <a href="kelola.php?ubah=<?php echo $row[
-            "id"
-        ]; ?>" type="button" class="btn icon btn-primary"><i class="bi bi-pencil"></i></a>
+
         <a href="#" onclick="confirmDelete(<?php echo $row [
             "id"
         ]; ?>, 'semuaBarang.php')" class="btn icon btn-danger"><i class="bi bi-trash"></i></a>

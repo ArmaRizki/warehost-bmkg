@@ -52,11 +52,7 @@ if ($totalPersentase > 100) {
 } elseif ($totalPersentase < 100) {
     $persentaseKeluar += 100 - $totalPersentase;
 }
-// Data untuk series pie chart
-// Assuming you have a database connection named $conn
-// $dataPie = [(int)$jumlahMasuk, (int)$jumlahKeluar];
-// Fetch years from the database
-// Fetch years for dropdown
+
 $years = [];
 $sqlYear = "SELECT DISTINCT YEAR(tanggal) AS year FROM masuk UNION SELECT DISTINCT YEAR(tanggal_keluar) AS year FROM masuk";
 $resultYear = $conn->query($sqlYear);
