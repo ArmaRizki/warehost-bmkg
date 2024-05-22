@@ -232,7 +232,7 @@ $no = 0;
     </div>
     <div class="form-group">
         <label for="harga" class="form-label">Harga</label>
-        <input type="text" name="harga" id="harga" class="form-control" placeholder="-" value="<?php echo "Rp ." .number_format($result["harga"], 0, ".", "."). ",00"; ?>" readonly>
+        <input type="text" name="harga" id="harga" class="form-control" placeholder="-" value="<?php echo "Rp" .number_format($result["harga"], 0, ".", "."). ",00"; ?>" readonly>
     </div>
     <div class="form-group" id="lokasiGroup">
     <label for="harga" class="form-label">Lokasi</label>

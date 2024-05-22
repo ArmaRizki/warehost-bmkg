@@ -2,7 +2,7 @@
 include "koneksi.php";
 include "auth.php";
 
-$query = "SELECT idjenis, jenisperalatan FROM jenisnama"; // Fetch both idbarang and namabarang
+$query = "SELECT idjenis, jenisperalatan FROM jenisnama"; // Fetch both idjenis and jenisperalatan
 $sql = mysqli_query($conn, $query);
 
 // Check if form is submitted for adding new data
@@ -23,14 +23,14 @@ $existingValues = array();
 
 // Check if there are any existing values
 if ($result->num_rows > 0) {
-    // Loop through each row and add namabarang to the array
+    // Loop through each row and add jenisperalatan to the array
     while($row = $result->fetch_assoc()) {
         $existingValues[] = $row["jenisperalatan"];
     }
 } 
 
 if (isset($_GET["delete"])) {
-    $id = $_GET["delete"]; // Get the idbarang from the URL parameter
+    $id = $_GET["delete"]; // Get the idjenis from the URL parameter
     $query = "DELETE FROM jenisnama WHERE idjenis = ?"; // Use prepared statement
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, "i", $id);
@@ -145,7 +145,7 @@ if (isset($_GET["delete"])) {
         </a>
         
             <ul class="submenu">
-                <li class="submenu-item">
+                <li class="submenu-item ">
                     <a href="namaBarang.php" class="submenu-link">Nama Barang</a>
                 </li>
                 
@@ -222,7 +222,7 @@ if (isset($_GET["delete"])) {
             echo "<h3>Data Barang Keluar</h3>";
         }
     } else {
-        echo "<h3>Jenis Peralatan</h3>";
+        echo "<h3>Data Barang</h3>";
     } ?>
 </div>
       <div class="col-12 col-md-6 order-md-2 order-first">
@@ -253,6 +253,9 @@ if (isset($_GET["delete"])) {
                         <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>" class="form" enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-6 col-12">
+        <div id="error-alert"></div>
+        <div id="success-alert"></div>
+        <div id="delete-alert"></div>
             <div class="form-group">
                 <label for="jenisperalatan" class="form-label">Jenis Peralatan</label>
                 <input
@@ -280,42 +283,92 @@ if (isset($_GET["delete"])) {
 
 <script>
     function validateForm() {
-        var input = document.getElementById("jenisperalatan").value;
-        var existingValues = <?php echo json_encode($existingValues); ?>; // Replace $existingValues with your array of existing values
-        
-        // Check if the input value already exists in the array
-        if (existingValues.includes(input)) {
-            document.getElementById("error-message").innerText = "Jenis peralatan ini sudah ada. Mohon masukkan nama lain";
+        var input = document.getElementById("jenisperalatan").value.trim().toLowerCase(); // Convert input to lowercase and remove leading/trailing whitespaces
+        var existingValues = <?php echo json_encode(array_map('strtolower', $existingValues)); ?>; // Convert existing values to lowercase
+
+        // Check if the input value is empty
+        if (input === "") {
+            document.getElementById("error-alert").innerHTML = `
+                <div class="alert alert-danger alert-dismissible show fade">
+                    Jenis peralatan tidak boleh kosong. Mohon isi nama barang.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            var errorAlert = document.getElementById("error-alert");
+            errorAlert.style.display = "block";
+            errorAlert.classList.add("show");
+
             return false; // Prevent form submission
         }
-        return true; // Allow form submission
+
+        // Check if the input value already exists in the array
+        if (existingValues.includes(input)) {
+            document.getElementById("error-alert").innerHTML = `
+                <div class="alert alert-danger alert-dismissible show fade">
+                    Jenis peralatan ini sudah ada, mohon masukkan nama lain.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            var errorAlert = document.getElementById("error-alert");
+            errorAlert.style.display = "block";
+            errorAlert.classList.add("show");
+
+            return false; // Prevent form submission
+        } else {
+            document.getElementById("success-alert").innerHTML = `
+                <div class="alert alert-success alert-dismissible show fade">
+                    Barang berhasil ditambahkan
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            var successAlert = document.getElementById("success-alert");
+            successAlert.style.display = "block";
+            successAlert.classList.add("show");
+            return true; // Allow form submission
+        }
     }
 </script>
 
 
 
+
+
                         <!-- Table to display data -->
                         <div class="table-responsive">
-                            <table class="table" id="table1">
-                                <thead>
-                                    <tr>
-                                        <th>Jenis Peralatan</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php while ($result = mysqli_fetch_assoc($sql)) { ?>
-                                        <tr>
-                                            <td><?php echo $result["jenisperalatan"]; ?></td>
-                                            <td>
-                                                <a href="#" onclick="confirmDelete('<?php echo $result["idjenis"]; ?>', 'jenisPeralatan.php')" class="btn icon btn-danger aksi-buttons">
-                                                    <i class="bi bi-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
+                        <?php
+// Assuming you have already connected to the database and stored the connection in a variable named $conn
+
+// Modify the SQL query to order by the date_added column in descending order
+$sql = mysqli_query($conn, "SELECT * FROM jenisnama ORDER BY idjenis DESC");
+
+if (!$sql) {
+    // Handle the error if the query fails
+    die("Query failed: " . mysqli_error($conn));
+}
+?>
+
+<table class="table" id="table1">
+    <thead>
+        <tr>
+            <th>Jenis Peralatan</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php while ($result = mysqli_fetch_assoc($sql)) { ?>
+            <tr>
+                <td><?php echo htmlspecialchars($result["jenisperalatan"], ENT_QUOTES, 'UTF-8'); ?></td>
+                <td>
+                <a href="#" data-jenisperalatan="<?php echo htmlspecialchars($result["jenisperalatan"], ENT_QUOTES, 'UTF-8'); ?>" onclick="confirmDelete(this.getAttribute('data-jenisperalatan'), '<?php echo htmlspecialchars($result["idjenis"], ENT_QUOTES, 'UTF-8'); ?>', 'namaBarang.php')" class="btn icon btn-danger aksi-buttons">
+    <i class="bi bi-trash"></i>
+</a>
+
+                </td>
+            </tr>
+        <?php } ?>
+    </tbody>
+</table>
+
                         </div>
                     </div>
                 </div>
@@ -331,11 +384,32 @@ if (isset($_GET["delete"])) {
     </div>
 
     <script>
-    function confirmDelete(jenisperalatan, page) {
-  window.location.href = page + "?delete=" + jenisperalatan;
+    function confirmDelete(jenisperalatan, idjenis, page) {
+        // Get the alert element
+        var confirmationAlert = document.getElementById("delete-alert");
+
+        // Set the message with the jenisperalatan
+        confirmationAlert.innerHTML = `
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>${jenisperalatan}</strong> telah berhasil dihapus.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+
+        // Make the alert visible
+        confirmationAlert.style.display = "block";
+
+        // Redirect after a short delay
+        setTimeout(function() {
+            window.location.href = page + "?delete=" + idjenis;
+        }, 1000); // 10 milliseconds delay
     }
-    
 </script>
+
+
+
+
+
 
     <script src="assets/static/js/components/dark.js"></script>
     <script src="assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>

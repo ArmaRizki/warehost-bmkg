@@ -41,7 +41,7 @@ if (isset($_GET["ubah"])) {
     $harga = $result["harga"];
     $lokasi = $result["lokasi"];
     $teknisi = $result["teknisi"];
-    // $foto = $result['foto'];
+    $foto = $result['foto'];
     $keterangan = $result["keterangan"];
 }
 ?>
@@ -329,9 +329,10 @@ if (isset($_GET["ubah"])) {
 
                 
 <div class="row">
-    <div class="col-md-6 col-12">
-        <h6>Nama Barang</h6>
-        <div class="form-group position-relative has-icon-right">
+<div class="col-md-6 col-12">
+    <h6>Nama Barang</h6>
+    <div class="form-group position-relative has-icon-right">
+        <div class="select-with-icon">
             <select id="nama_barang" class="form-control" name="nama_barang" class="form-select" required>
                 <option value="">Pilih Nama Barang</option>
                 <?php
@@ -346,11 +347,21 @@ if (isset($_GET["ubah"])) {
                 }
                 ?>
             </select>
-            <div class="form-control-icon">
+            <a href="#" class="form-control-icon" id="caret-icon">
                 <i class="bi bi-caret-down-fill"></i>
-            </div>
+            </a>
         </div>
     </div>
+</div>
+
+
+
+
+
+
+
+
+
     <div class="col-md-6 col-12">
         <h6>Jenis Peralatan</h6>
         <div class="form-group position-relative has-icon-right">
@@ -440,9 +451,11 @@ if (isset($_GET["ubah"])) {
                         placeholder="Harga Barang"
                         value="<?php echo $harga; ?>"
                         required
+                        
                       />
                     </div>
                   </div>
+
                   
                   <?php if (isset($_GET["status"]) && $_GET["status"] === 'keluar') { ?>
         <div class="col-md-6 col-12">
@@ -580,6 +593,7 @@ function validateFileSize1(input) {
     }
 }
 </script>
+
 
 </body>
 

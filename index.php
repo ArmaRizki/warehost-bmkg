@@ -475,7 +475,7 @@ while ($row = mysqli_fetch_assoc($resultKeluar)) {
             </header>
             
 <div class="page-heading">
-    <h3>Warehouse Management BMKG Sleman</h3>
+    <h3>Warehouse Management BMKG Stageof Sleman</h3>
 </div> 
 
 <div class="row">

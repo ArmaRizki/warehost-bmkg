@@ -4,8 +4,8 @@
 
     require "vendor/autoload.php";
     $query = "SELECT * FROM masuk;";
-    $sql = mysqli_query($conn, $query);
-    $no = 0;
+    $sql = mysqli_query($conn, "SELECT * FROM masuk WHERE status = 'masuk' ORDER BY id DESC");
+
 ?>
 
 
@@ -264,7 +264,7 @@
                                     <th>SN</th>
                                     <th>Asal Perolehan</th>
                                     <!-- <th>Jumlah Barang</th> -->
-                                    <th>Harga (Rp)</th>
+                                    <th>Harga</th>
                                     <th>Keterangan</th>
                                     <th>Foto</th>
                                     <th>File</th>
@@ -274,7 +274,7 @@
                             <tbody>
         <?php
         while ($result = mysqli_fetch_assoc($sql)) {
-            if ($result["status"] === 'masuk') { 
+            
         ?>
     <tr>
 
@@ -328,7 +328,7 @@
             <td><?php echo $result["merk"]; ?></td>
             <td><?php echo $result["sn"]; ?></td>
             <td><?php echo $result["asal_perolehan"]; ?></td>
-            <td><?php echo "Rp. " .number_format($result["harga"], 0, ".", ".").",00"; ?></td>
+            <td><?php echo "Rp" .number_format($result["harga"], 0, ".", ".").",00"; ?></td>
             <td><?php echo $result["keterangan"]; ?></td>
             <td><img src="./uploads/<?php echo $result["foto"]; ?>" alt="Photo" style="max-width: 100px; max-height: 100px;"></td>
             <td>
@@ -346,20 +346,21 @@
                 <a href="./uploads/<?php echo $result["file"]; ?>" download="<?php echo $fileName; ?>"><?php echo $fileNameDisplay; ?></a>
             </td>
             <td>
-            <button class="btn icon btn-secondary me-1 aksi button" data-bs-toggle="modal" data-bs-target="#modalPrintQR" onclick="setQRCodeData('<?php echo htmlspecialchars($qrContent); ?>', '<?php echo htmlspecialchars($result['nama_barang']); ?>');" alt="QRCode" style="max-width: 100px; max-height: 100px;">
-    <i class="bi bi-qr-code-scan"></i>
-</button>
-            <a href="kelola.php?ubah=<?php echo $result["id"]; ?>&status=masuk" type="button" class="btn icon btn-primary me-1 aksi-buttons">
-                <i class="bi bi-pencil"></i>
-            </a>
-            <a href="#" onclick="confirmDelete('<?php echo $result["id"]; ?>', 'barangMasuk.php')" class="btn icon btn-danger aksi-buttons">
-                <i class="bi bi-trash"></i>
-            </a>
-    </td>
+    <button class="btn icon btn-secondary me-1 aksi button" data-bs-toggle="modal" data-bs-target="#modalPrintQR" onclick="setQRCodeData('<?php echo htmlspecialchars($qrContent); ?>', '<?php echo htmlspecialchars($result['nama_barang']); ?>');" style="max-width: 100px; max-height: 100px; margin-bottom: 5px;">
+        <i class="bi bi-qr-code-scan"></i>
+    </button>
+    <a href="kelola.php?ubah=<?php echo $result["id"]; ?>&status=masuk" type="button" class="btn icon btn-primary me-1 aksi-buttons" style="margin-bottom: 5px;">
+        <i class="bi bi-pencil"></i>
+    </a>
+    <a href="#" onclick="confirmDelete('<?php echo $result["id"]; ?>', 'barangMasuk.php')" class="btn icon btn-danger aksi-buttons">
+        <i class="bi bi-trash"></i>
+    </a>
+</td>
+
 
         </tr>
         <?php
-            }
+            
         }
         ?>
     </tbody>
