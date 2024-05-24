@@ -329,10 +329,6 @@ if (isset($_GET["delete"])) {
     }
 </script>
 
-
-
-
-
                         <!-- Table to display data -->
                         <div class="table-responsive">
                         <?php

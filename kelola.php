@@ -333,7 +333,7 @@ if (isset($_GET["ubah"])) {
     <h6>Nama Barang</h6>
     <div class="form-group position-relative has-icon-right">
         <div class="select-with-icon">
-            <select id="nama_barang" class="form-control" name="nama_barang" class="form-select" required>
+            <select id="nama_barang" class="form-select" name="nama_barang" class="form-select" required>
                 <option value="">Pilih Nama Barang</option>
                 <?php
                 $sql = "SELECT namabarang FROM datanama";
@@ -347,8 +347,6 @@ if (isset($_GET["ubah"])) {
                 }
                 ?>
             </select>
-            <a href="#" class="form-control-icon" id="caret-icon">
-                <i class="bi bi-caret-down-fill"></i>
             </a>
         </div>
     </div>
@@ -365,7 +363,7 @@ if (isset($_GET["ubah"])) {
     <div class="col-md-6 col-12">
         <h6>Jenis Peralatan</h6>
         <div class="form-group position-relative has-icon-right">
-            <select id="jenis_peralatan" class="form-control" name="jenis_peralatan" required>
+            <select id="jenis_peralatan" class="form-select" name="jenis_peralatan" required>
                 <option value="">Pilih Jenis Peralatan</option>
                 <?php
                 $sql = "SELECT jenisperalatan FROM jenisnama";
@@ -379,9 +377,7 @@ if (isset($_GET["ubah"])) {
                 }
                 ?>
             </select>
-            <div class="form-control-icon">
-                <i class="bi bi-caret-down-fill"></i>
-            </div>
+
         </div>
     </div>
 
@@ -592,6 +588,15 @@ function validateFileSize1(input) {
         input.value = ''; // Clear the input field
     }
 }
+</script>
+
+
+<script>
+    //dropdown button
+    document.getElementById('caret-icon').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('nama_barang').focus();
+    });
 </script>
 
 
