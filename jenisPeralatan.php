@@ -359,7 +359,7 @@ if (!$sql) {
             <tr>
                 <td><?php echo htmlspecialchars($result["jenisperalatan"], ENT_QUOTES, 'UTF-8'); ?></td>
                 <td>
-                <a href="#" data-jenisperalatan="<?php echo htmlspecialchars($result["jenisperalatan"], ENT_QUOTES, 'UTF-8'); ?>" onclick="confirmDelete(this.getAttribute('data-jenisperalatan'), '<?php echo htmlspecialchars($result["idjenis"], ENT_QUOTES, 'UTF-8'); ?>', 'namaBarang.php')" class="btn icon btn-danger aksi-buttons">
+                <a href="#" data-jenisperalatan="<?php echo htmlspecialchars($result["jenisperalatan"], ENT_QUOTES, 'UTF-8'); ?>" onclick="confirmDelete(this.getAttribute('data-jenisperalatan'), '<?php echo htmlspecialchars($result["idjenis"], ENT_QUOTES, 'UTF-8'); ?>', 'jenisPeralatan.php')" class="btn icon btn-danger aksi-buttons">
     <i class="bi bi-trash"></i>
 </a>
 
