@@ -454,6 +454,25 @@ while ($row = mysqli_fetch_assoc($resultKeluar)) {
                 
 
             </li>
+            <li
+                class="sidebar-item has-sub">
+                <a href="#" class='sidebar-link'>
+                <i class="bi bi-app"></i>
+                    <span>Aplikasi</span>
+                </a>
+                
+                <ul class="submenu">
+                    
+                    <li class="submenu-item ">
+                        
+                        <a href="download.php" class="submenu-link"><i class="bi bi-download"></i> <span>Unduh aplikasi</span></a>
+                        
+                    </li>
+                    
+                </ul>
+                
+
+            </li>
 
         <li class="sidebar-item">
             <a id="background" href="logout.php" class="btn btn-outline-danger btn-block">

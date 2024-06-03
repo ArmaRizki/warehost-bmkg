@@ -295,7 +295,8 @@
     <a href="infoBarang.php?id_barang=<?php echo htmlspecialchars($result["id_barang"]); ?>">
     <?php
         $id_barang = $result['id_barang'];
-        $qrContent = "36.68.71.3/whm/infoBarang.php?id_barang=$id_barang";
+        $serverIp = $_SERVER['SERVER_ADDR'];
+        $qrContent = "$serverIp/whm/infoBarang.php?id_barang=$id_barang";
         ?>
 
 
